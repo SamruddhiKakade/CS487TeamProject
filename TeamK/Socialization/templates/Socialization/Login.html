@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+    <body>
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend>Login</legend>
+                {{ form.as_p }}
+            </fieldset>
+            <fieldset class="form-group">
+                <button class="button btn-outline-info" type="submit" value="{% url 'account' %}">Sign In</button>
+            </fieldset>
+        </form>
+    </body>
+
+<!--    <form action="/Username/" method="post">-->
+<!--        <div>-->
+<!--            <label for="Username">Username: </label>-->
+<!--            <input id="Username" type="text" name="Username" value="">-->
+<!--        </div>-->
+
+<!--        <div>-->
+<!--            <label for="Password">Password: </label>-->
+<!--            <input id="Password" type="text" name="Password" value="">-->
+<!--        </div>-->
+
+<!--        <div>-->
+<!--            <label for="Name">Name: </label>-->
+<!--            <input id="Name" type="text" name="Name" value="">-->
+<!--        </div>-->
+
+<!--        <div>-->
+<!--            <label for="Year">Year: </label>-->
+<!--            <input id="Year" type="number" name="Year" value="">-->
+<!--        </div>-->
+
+<!--        <div>-->
+<!--            <label for="Major">Major: </label>-->
+<!--            <input id="Major" type="text" name="Major" value="">-->
+<!--        </div>-->
+<!--        <input type="submit" value="OK">-->
+<!--    </form>-->
+</html>
