@@ -4,13 +4,8 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Information(models.Model):
-    # Username = models.CharField(max_length=10, unique=True)
-    # Password = models.CharField(max_length=50)
-    # Name = models.CharField(max_length=20)
-    # Year = models.IntegerField()
-    # Major = models.CharField(max_length=100)
 
-    user = models.ForeignKey(User, related_name='+', on_delete=models.CASCADE, blank=True, null=True)
+    person = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
     Name = models.CharField(max_length=20)
     Year = models.IntegerField()
     Major = models.CharField(max_length=100)

@@ -25,5 +25,5 @@ urlpatterns = [
     path('register/', socviews.register, name='register'),
     path('accounts/profile/', socviews.userAcct, name='account'),
     path('', socviews.register, name='register'),
-    path('information')
+    path('information',socviews.information,name = 'information')
 ]

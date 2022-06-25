@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Login</title>
+    </head>
+    <body>
+        <form method="post">
+            {% csrf_token %}
+            <label for="name">Your name: </label>
+            <input id="name" type="text" name="name">
+            <label for="year">Year: </label>
+            <input id="year" type="number" name="year">
+            <label for="major">Major: </label>
+            <input id="major" type="text" name="major">
+            <input type="submit" value="OK">
+        </form>
+        </body>
+    </html>
