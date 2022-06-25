@@ -16,3 +16,6 @@ class informationForm(forms.Form):
 
 class messageForm(forms.Form): 
     message = forms.CharField(label='', max_length=1000)
+
+class userNameForm(forms.Form): 
+    userName = forms.CharField(label='', max_length=20)
