@@ -24,5 +24,6 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path('register/', socviews.register, name='register'),
     path('accounts/profile/', socviews.userAcct, name='account'),
-    path('', socviews.userAcct, name='account'),
+    path('', socviews.register, name='register'),
+    path('information')
 ]

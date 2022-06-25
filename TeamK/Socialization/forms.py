@@ -11,7 +11,7 @@ class UserRegisterForm(UserCreationForm):
 
 class informationForm(forms.Form):  
     name = forms.CharField(label='', max_length=20)
-    name = forms.IntegerField(label='')
+    year = forms.IntegerField(label='')
     major = forms.CharField(label='', max_length=100)
 
 class messageForm(forms.Form): 
