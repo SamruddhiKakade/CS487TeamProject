@@ -3,7 +3,7 @@ from django.dispatch import receiver
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from Socialization.models import ChatMessage,Information
-from Socialization.forms import informationForm,UserRegisterForm,messageForm
+from Socialization.forms import informationForm,UserRegisterForm,messageForm,userNameForm
 from django.contrib.auth.models import User
 from django.db.models import Q
 
@@ -77,3 +77,18 @@ def showMessages(request):
         }  
         return render(request, 'chat.html', context)
 
+def searchUser(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    if request.method == "POST": 
+        form = userNameForm(request.POST)
+        if form.is_valid():  
+            user1 = form.cleaned_data['userName']
+            user2 = User.objects.filter(username = user1)
+            context = {    
+            'user' : user2
+        }  
+        return render(request, 'page.html', context)
+    else:
+        form = userNameForm()
+    return render(request, 'page.html', {'form': form})
