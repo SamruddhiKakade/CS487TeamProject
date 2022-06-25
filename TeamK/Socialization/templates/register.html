@@ -12,11 +12,35 @@
         <fieldset class="form-group">
             <legend>Sign Up</legend>
             {{ form|crispy }}
+
+            <label for="Name">Name: </label>
+            <input id="Name" type="text" name="Name" value="">
+
+            <label for="Year">Year: </label>
+            <input id="Year" type="number" name="Year" value="">
+
+            <label for="Major">Major: </label>
+            <input id="Major" type="text" name="Major" value="">
+
         </fieldset>
+
         <fieldset class="form-group">
             <button class="button btn-outline-info" type="submit" value="{% url 'login' %}">Create Account</button>
         </fieldset>
     </form>
+
+<!--    <form method="POST">-->
+<!--        <label for="Name">Name: </label>-->
+<!--        <input id="Name" type="text" name="Name" value="">-->
+
+<!--        <label for="Year">Year: </label>-->
+<!--        <input id="Year" type="number" name="Year" value="">-->
+
+<!--        <label for="Major">Major: </label>-->
+<!--        <input id="Major" type="text" name="Major" value="">-->
+
+<!--    </form>-->
+
     <article>
         <p>
           Already have an account? <a class="ml-2" href="{% url 'login' %}">Log In</a>

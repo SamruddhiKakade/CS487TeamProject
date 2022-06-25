@@ -12,6 +12,9 @@
     </fieldset>
     <fieldset class="form-group">
         <button class="button btn-outline-info" type="submit" value="{% url 'account' %}">Sign In</button>
+
+        {{request.user}}
+
     </fieldset>
 </form>
     </body>
