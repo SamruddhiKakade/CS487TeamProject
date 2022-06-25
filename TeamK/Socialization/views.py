@@ -3,7 +3,7 @@ from django.dispatch import receiver
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from Socialization.models import ChatMessage,Information
-from Socialization.forms import informationForm,UserRegisterForm
+from Socialization.forms import informationForm,UserRegisterForm,messageForm
 from django.contrib.auth.models import User
 from django.db.models import Q
 
@@ -27,6 +27,7 @@ def register(request):
             return redirect('login')
     else:
         form = UserRegisterForm()
+        form1 = informationForm()
     return render(request, 'register.html', {'form': form})
 
 def home(request):
@@ -39,13 +40,19 @@ def home(request):
 def newMessage(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    if request.method == "POST":  
-        newMessage = ChatMessage(                
-            sender = request.user,                                                     
-            receiver = '',
-            body = request.POST.get('message'),                
-        )     
-        newMessage.save()  
+    if request.method == "POST": 
+        form = messageForm(request.POST)
+        if form.is_valid(): 
+            newMessage = ChatMessage(                
+                sender = request.user,                                                     
+                receiver = '',
+                message = form.cleaned_data['message'],                
+            )     
+            newMessage.save() 
+            return redirect('showMessages')
+    else:
+        form = messageForm()
+    return render(request, 'chat.html', {'form': form})
 
 def showInbox(request):
     if not request.user.is_authenticated:
@@ -57,7 +64,7 @@ def showInbox(request):
             'recieverNames': messages1,
             'senderNames': messages2  
         }  
-        return render(request, 'inbox.html', context)
+        return render(request, 'inbox.html', context) 
 
 def showMessages(request):
     if not request.user.is_authenticated:
