@@ -4,6 +4,8 @@
         <title>Login</title>
     </head>
     <body>
+        {{request.user}}
+        {{temp}}
         <form method="post">
             {% csrf_token %}
             <label for="name">Your name: </label>

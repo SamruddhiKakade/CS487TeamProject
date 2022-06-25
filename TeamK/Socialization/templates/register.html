@@ -7,8 +7,15 @@
 <body>
 {% load crispy_forms_tags %}
 <main class=" content-section">
-    <form method="POST">
+    
+    <form method="post">
         {% csrf_token %}
+        <label for="name">Your name: </label>
+        <input id="name" type="text" name="name">
+        <label for="year">Year: </label>
+        <input id="year" type="number" name="year">
+        <label for="major">Major: </label>
+        <input id="major" type="text" name="major">
         <fieldset class="form-group">
             <legend>Sign Up</legend>
             {{ form|crispy }}

@@ -23,7 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
     path('register/', socviews.register, name='register'),
-    path('accounts/profile/', socviews.userAcct, name='account'),
+    path('accounts/profile/', socviews.home, name='home'),
     path('', socviews.register, name='register'),
-    path('information',socviews.information,name = 'information')
 ]
