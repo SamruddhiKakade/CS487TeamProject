@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend>Sign Up</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <fieldset class="form-group">
+                <button class="button btn-outline-info" type="submit" value="{% url 'login' %}">Create Account</button>
+            </fieldset>
+        </form>
+</body>
+</html>
