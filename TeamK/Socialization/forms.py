@@ -9,12 +9,10 @@ class UserRegisterForm(UserCreationForm):
         model = User
         fields = ['email', 'username', 'password1', 'password2']
 
-class InfoForm(forms.Form):
-    # Username = forms.CharField(label='Username', max_length=1000)
-    # Password = forms.CharField(label='Password', max_length=50)
-    Name = forms.CharField(label='Name', max_length=20)
-    Year = forms.IntegerField(label='Year')
-    Major = forms.CharField(label='Major', max_length=100)
+class informationForm(forms.Form):  
+    name = forms.CharField(label='', max_length=20)
+    name = forms.IntegerField(label='')
+    major = forms.CharField(label='', max_length=100)
 
-class ChatMessageForm(forms.Form):
-    Message = forms.CharField(label='Message', max_length=1000)
+class messageForm(forms.Form): 
+    message = forms.CharField(label='', max_length=1000)
