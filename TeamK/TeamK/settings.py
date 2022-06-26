@@ -124,4 +124,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# CSRF_FAILURE_VIEW = 'Socialization.views.csrf_failure'
+
 

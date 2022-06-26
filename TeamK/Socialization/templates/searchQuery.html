@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Search Query</title>
+        <link rel="stylesheet" href="main.css">
+    </head>
+    <body>
+        <form method="POST" action="{% url 'searchResult' %}">
+            {% csrf_token %}
+            <h1 >Search Query Page</h1>
+
+                EnterName: <input id="name" type="text" name="name">
+
+<!--            <div>-->
+<!--                <input type="text" placeholder="Filter1">-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <input type="text" placeholder="Filter2">-->
+<!--            </div>-->
+
+            <div>
+                <button class="button btn-outline-info" type="submit" value="{% url 'searchResult' %}">Submit</button>
+            </div>
+
+        </form>
+
+    </body>
+</html>

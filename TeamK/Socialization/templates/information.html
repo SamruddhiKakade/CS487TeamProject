@@ -6,7 +6,7 @@
     <body>
         {{request.user}}
         {{temp}}
-        <form method="post">
+        <form method="POST">
             {% csrf_token %}
             <label for="name">Your name: </label>
             <input id="name" type="text" name="name">

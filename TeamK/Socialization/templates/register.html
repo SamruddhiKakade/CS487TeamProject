@@ -7,8 +7,8 @@
 <body>
 {% load crispy_forms_tags %}
 <main class=" content-section">
-    
-    <form method="post">
+
+    <form method="POST">
         {% csrf_token %}
         <label for="name">Your name: </label>
         <input id="name" type="text" name="name">

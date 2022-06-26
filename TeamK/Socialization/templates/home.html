@@ -4,12 +4,33 @@
         <title>Home</title>
     </head>
     <body>
-<h1>Testing
+<h1>Welcome
     {{request.user}}
     {{info.person}}
     {{info.Name}}
     {{info.Year}}
     {{info.Major}}
+
+    <form method="POST" action="{% url 'search' %}">
+        {% csrf_token %}
+        <button class="button btn-outline-info" type="submit" value="{% url 'search' %}">Search</button>
+
+    </form>
+
+    <form method="POST" action="{% url 'chats' %}">
+        {% csrf_token %}
+
+        <button class="button btn-outline-info" type="submit" value="{% url 'chats' %}">Chat Rooms</button>
+
+    </form>
+
+    <form method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+
+        <button class="button btn-outline-info" type="submit" value="{% url 'login' %}">Sign Out</button>
+
+    </form>
+
 </h1>>
         </body>
     </html>

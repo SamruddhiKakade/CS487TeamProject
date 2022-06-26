@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Message</title>
+        <link rel="stylesheet" href="main.css">
+    </head>
+    <body>
+        <form method="POST">
+            <h1 >Chat with {{receiver}} </h1>
+
+            <div>
+                <button class="button btn-outline-info" type="submit" value="{% url 'home' %}">Home</button>
+            </div>
+
+            <div>
+                Your Message: <input type="text" placeholder="Type Here">
+            </div>
+
+            <div>
+                <button class="button btn-outline-info" type="submit" value="{% url 'chat' %}">Send</button>
+            </div>
+
+        </form>
+
+    </body>
+</html>

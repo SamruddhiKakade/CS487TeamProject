@@ -19,3 +19,9 @@ class messageForm(forms.Form):
 
 class userNameForm(forms.Form): 
     userName = forms.CharField(label='', max_length=20)
+
+class searchUserForm(forms.Form):
+    name = forms.CharField(label='', max_length=20)
+
+class searchResultForm(forms.Form):
+    choice = forms.CharField(label='', max_length=20)

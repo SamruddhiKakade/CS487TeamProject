@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Search Result</title>
+    </head>
+    <body>
+        <form method="POST">
+            <h1 >Search Result Page</h1>
+
+            <div>
+                <button type="button">Back</button>
+            </div>
+
+            {% for i in Usernames %}
+                <br>
+                    {{ i }}
+                </br>
+            {% endfor %}
+
+            <label for="name">Who would you like to chat with? </label>
+            <input id="name" type="text" name="name">
+
+            <div>
+                <button class="button btn-outline-info" type="submit" value="{% url 'chat' %}">Chat Now</button>
+            </div>
+
+        </form>
+
+    </body>
+</html>
