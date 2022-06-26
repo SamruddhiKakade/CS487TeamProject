@@ -1,32 +1,57 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Message</title>
-        <link rel="stylesheet" href="main.css">
-    </head>
+<html class="messages" id="chat">
+    {% load crispy_forms_tags %}
+    {% block content %}
     <body>
-        <form method="POST">
-            <h1 >Chat with {%user1%} </h1>
+      <header>
+        <h1>chat</h1>
+      </header>
 
-            <div>
-                <button class="button btn-outline-info" type="submit" value="{% url 'home' %}">Home</button>
+    <main class="container">
+        <article class="row">
+            <div class="card col-md-12 mt-5 p-3 shadow-sm">
+                {%if chat.user1 == request.user %}
+                <h5>{{ chat.user2 }}</h5><a class="stretched-link" href="{% url 'chat' chat.pk %}"></a>
+                {% endif %}
+                {%if chat.user2 == request.user %}
+                <h5>{{ chat.user1 }}</h5><a class="stretched-link" href="{% url 'chat' chat.pk %}"></a>
+                {% endif %}
             </div>
-
-            {% for i in messages %}
-                <br>
-                    {{ i }}
-                </br>
-            {% endfor %}
-
-            <div>
-                Your Message: <input type="text" placeholder="Type Here">
+        </article>
+        {% if message_list.all.count == 0 %}
+        <article class="row my-5">
+            <div class="col-md-12">
+                <p class="empty-text">No Messages</p>
             </div>
-
-            <div>
-                <button class="button btn-outline-info" type="submit" value="{% url 'chat' %}">Send</button>
+        </article>
+        {% endif %}
+        {% for message in message_list %}
+        <article class="row">
+            <div class="col-md-12 my-1">
+                {% if message.sender == request.user %}
+                    <div class="col-md-12"> 
+                      <p>You: {{ message.body }}</p>
+                    </div>
+                {% elif message.receiver == request.user%}
+                    <div class="col-md-12">
+                      <p>{{message.sender}}: {{ message.body }}</p>
+                    </div>
+                {% endif %}
             </div>
-
-        </form>
-
-    </body>
+        </article>
+        {% endfor %}
+        <article class="row">
+            <div class="card col-md-12 p-3 shadow-sm">
+                <form method="POST" action="{% url 'NewMessage' chat.pk %}">
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <fieldset class="d-grid gap-2 mt-3">
+                        <button class="button btn-light" type="submit">Send Message</button>
+                    </fieldset>
+                </form>
+            </div>
+        </article>
+    </main>
+    {% endblock content %}
+  </body>
 </html>

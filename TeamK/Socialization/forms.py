@@ -7,21 +7,21 @@ class UserRegisterForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['email', 'username', 'password1', 'password2']
+        fields = ['first_name', 'last_name','email', 'username', 'password1', 'password2']
 
-class informationForm(forms.Form):  
-    name = forms.CharField(label='', max_length=20)
-    year = forms.IntegerField(label='')
-    major = forms.CharField(label='', max_length=100)
+# class ProfileForm(forms.Form): 
+#     class Meta:
+#         model = Profile
+#         fields = ['Year','Major']
 
-class messageForm(forms.Form): 
-    message = forms.CharField(label='', max_length=1000)
-
-class userNameForm(forms.Form): 
-    userName = forms.CharField(label='', max_length=20)
 
 class searchUserForm(forms.Form):
     name = forms.CharField(label='', max_length=20)
 
-class searchResultForm(forms.Form):
-    name = forms.CharField(label='', max_length=20)
+class chatForm(forms.Form):  
+    username = forms.CharField(label='', max_length=100)
+    
+class messageForm(forms.Form):  
+    message = forms.CharField(label='', max_length=1000)
+
+

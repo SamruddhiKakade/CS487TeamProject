@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    {% load crispy_forms_tags %}
+    {% block content %}
+    <body>
+      <header>
+        <h1>NewChat</h1>
+      </header>
+
+    <main class="container">
+        <article class="row mt-5">
+            <div class="col-md-3 col-sm-6">
+                <a href="/Messages" class="button btn-light">Back to Messages</a>
+            </div>
+        </article>
+        <div class="col-md-3 col-sm-6">
+            {% for i in Usernames %}
+            <br>
+                {{ i }}
+            </br>
+             {% endfor %}
+        </div>
+        <article class="row justify-content-center mt-5">
+            <div class="col-md-5 col-sm-12">
+                <h5>New Message</h5>
+                {{request.user}}
+            </div>
+        </article>
+        <article class="row justify-content-center mt-3 mb-5">
+            <div class="col-md-5 col-sm-12">
+                <form method="POST">
+                    {% csrf_token %}
+                    <p>Enter username of user you wish to message</p>
+                    {{ form | crispy }}
+                    <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-success mt-3">Continue</button>
+                    </div>
+                </form>
+            </div>
+        </article>
+    </main>
+    {% endblock content %}
+  </body>
+</html>

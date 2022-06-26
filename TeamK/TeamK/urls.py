@@ -22,12 +22,14 @@ from Socialization import views as socviews
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
-    path('register/', socviews.register, name='register'),
-    path('chats/', socviews.showChats, name='chats'),
-    path('chat/', socviews.showMessages, name='chat'),
-    path('accounts/profile/', socviews.home, name='home'),
-    path('search/', socviews.openSearch, name='search'),
-    path('searchResult/', socviews.searchUser, name='searchResult'),
+    # path('profile/', socviews.profile, name='profile'),
+    path('home/', socviews.home, name='home'),
+    path('search/', socviews.search, name='search'),
     path('', socviews.register, name='register'),
-
+    path('register', socviews.register, name='register'),
+    path('Messages', socviews.showChats, name='Messages'),
+    path('Messages/newchat', socviews.newChat, name='newchat'),
+    path('Messages/<int:pk>/', socviews.showMessages, name='chat'),
+    path('Messages/<int:pk>/NewMessage/', socviews.newMessage, name='NewMessage'),
+    path('openSearch',socviews.openSearch,name='openSearch'),
 ]

@@ -1,104 +1,66 @@
-from hmac import new
-from django.dispatch import receiver
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from Socialization.models import ChatMessage,Information
-from Socialization.forms import informationForm,UserRegisterForm,messageForm,userNameForm,searchUserForm,searchResultForm
+from Socialization.models import Chat,Message
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
-
-
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .forms import UserRegisterForm, searchUserForm,chatForm,messageForm
 
 
 # Create your views here.
-@csrf_exempt
 def register(request):
     if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        print(form.is_valid())
-        temp = form.save()
-        form1 = informationForm(request.POST)
-        if form1.is_valid():
-            newInformation = Information(
-                person = temp,
-                Name = form1.cleaned_data['name'],
-                Year = form1.cleaned_data['year'],
-                Major = form1.cleaned_data['major'],
-            )
-            newInformation.save
+        # profile_form = ProfileForm(request.POST)
+        # profile = profile_form.save(commit=False)
+        user_form = UserRegisterForm(request.POST)
+        if user_form.is_valid():
+            user = user_form.save(commit=False)
+            # user.profile = profile
+            user.save()
+            username = user.username
+            messages.success(request, f'Hello {username}! Your account has been created. You are now ready to log in.')
             return redirect('login')
     else:
-        form = UserRegisterForm()
-        form1 = informationForm()
-    return render(request, 'register.html', {'form': form})
+        user_form = UserRegisterForm()
+        # profile_form = ProfileForm()
+    return render(
+        request, 
+        'register.html', 
+        {
+            'user_form': user_form,
+            # 'profile_form': profile_form
+        }
+    )
+
+# @receiver(post_save, sender=User)
+# def create_profile(sender, instance, created, **kwargs):
+#     if created:
+
+#         # can now set user_status attribute
+#         Profile.objects.update_or_create(
+#             user=instance,
+#             user_status=instance.profile.user_status,
+#         )
+
+
+# @receiver(post_save, sender=User)
+# def save_profile(sender, instance, **kwargs):
+#     instance.profile.save()
 
 @csrf_exempt
 def home(request):
-    info = Information.objects.filter(person = request.user)
-    context = {
-        'info': info
-    }
-    return render(request, 'home.html',context)
+    return render(request, 'home.html')
 
 # @csrf_exempt
-# def newMessage(request):
-#     if not request.user.is_authenticated:
-#         return redirect('login')
-#     if request.method == "POST":
-#         form = messageForm(request.POST)
-#         print(form.is_valid())
-#         newMessage = ChatMessage(
-#             sender=request.user,
-#             receiver='',
-#             message=form.cleaned_data['message'],
-#         )
-#         newMessage.save()
-#         return redirect('showMessages')
-#     else:
-#         form = messageForm()
-#     return render(request, 'chat.html', {'form': form})
+# def profile(request):
+#     info = Information.objects.filter(person = request.user)
+#     context = {
+#         'info': info 
+#     }
+#     return render(request, 'profile.html',context)
 
-@csrf_exempt
-def showInbox(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
-    if request.method == "GET":
-        messages1 = ChatMessage.objects.filter(Q(sender = request.user)) 
-        messages2 = ChatMessage.objects.filter(Q(receiver = request.user)) 
-        context = {    
-            'recieverNames': messages1,
-            'senderNames': messages2  
-        }  
-        return render(request, 'inbox.html', context) 
 
-@csrf_exempt
-def showMessages(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
-    if request.method == "POST":
-        form = searchResultForm(request.POST)
-        print(form.is_valid())
-        user1 = form.cleaned_data['name']
-        user2 = User.objects.filter(Q(username__contains=user1))
-        messagesList = ChatMessage.objects.filter(Q(Q(sender = request.user)&Q(reciever = user2)))
-        if(len(list(messagesList)) == 0):
-            messagesList = ChatMessage.objects.filter(Q(Q(receiver = request.user)&Q(sender = user2)))
-
-        context = {
-            'receiver' : user1,
-            'messages' : list(messagesList)
-        }
-        if(len(list(messagesList)) == 0):
-            newMessage = ChatMessage(
-                sender=request.user,
-                receiver='',
-                message=form.cleaned_data['message'],
-            )
-            newMessage.save()
-        return render(request, 'chat.html', context)
-    else:
-        return render(request, 'chat.html')
 
 @csrf_exempt
 def openSearch(request):
@@ -107,61 +69,116 @@ def openSearch(request):
     if request.method == "POST":
         return render(request, 'searchQuery.html')
 
-@csrf_exempt
-def searchUser(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
-    if request.method == "POST":
-        form = searchUserForm(request.POST)
-        # if form.is_valid():
-        #     name = form.cleaned_data['name']
-        #     matches = User.objects.filter(Q(username__contains=name) | Q(Name__contains=name))
-        #     context = {
-        #         'Names' : list(matches.Name),
-        #         'Usernames' : list(matches.username)
-        #     }
-        print(form.is_valid())
-        name = form.cleaned_data['name']
-        matches = User.objects.filter(Q(username__contains=name))
-        context = {
-            'Usernames': list(matches)
-        }
-        return render(request, 'searchResult.html', context)
 
-@csrf_exempt
-def searchResults(request):
+def search(request):
     if not request.user.is_authenticated:
         return redirect('login')
+    if request.method == "GET":
+        form = searchUserForm()    
+        context = {      
+            'form': form    
+        } 
+        return render(request, 'searchQuery.html', context)
     if request.method == "POST":
         form = searchUserForm(request.POST)
+        form1 = chatForm()
         if form.is_valid():
             name = form.cleaned_data['name']
-            context = {
-                'matches' : User.objects.filter(Q(username__contains=name) | Q(Name__contains=name))}
+        context = {
+            'Usernames' : User.objects.filter(Q(username__contains=name) | Q(Name__contains=name)),
+            'form':form1
+        }
+        return render(request, 'NewChat.html',context )
 
-        return render(request, 'searchResult.html', context)
-
-@csrf_exempt
+def newChat(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    if request.method == "GET":
+        form = chatForm()    
+        context = {      
+            'form': form    
+        } 
+        return render(request, 'NewChat.html', context)
+    if request.method == "POST":
+        form = chatForm(request.POST)    
+        username = request.POST.get('username')    
+        try:      
+            receiver = User.objects.get(username = username)      
+            if Chat.objects.filter(user1 = request.user, user2 = receiver).exists():
+                chat = Chat.objects.filter(user1 = request.user, user2 = receiver)[0]
+                chatpk = chat.pk
+                return redirect('chat', pk = chatpk)
+            elif Chat.objects.filter(user1 = receiver, user2 = request.user).exists():        
+                chat = Chat.objects.filter(user1 = receiver, user2 = request.user)[0]
+                chatpk = chat.pk
+                return redirect('chat', pk = chatpk)
+            else:        
+                newchat = Chat(          
+                    user1 = request.user,          
+                    user2 = receiver        
+                )        
+                newchat.save()
+                chatpk = newchat.pk
+                return redirect('chat', pk = chatpk)    
+        except:      
+            return redirect('newchat')    
+    
 def showChats(request):
     if not request.user.is_authenticated:
         return redirect('login')
+    if request.method == "GET":
+        chats = Chat.objects.filter(Q(user1 = request.user) | Q(user2 = request.user)) 
+        context = {    
+            'chats': chats  
+        }  
+        return render(request, 'Messages.html', context)
+           
+def newMessage(request, pk):
+    if not request.user.is_authenticated:
+        return redirect('login')
     if request.method == "POST":
-        context = {
+        chat = Chat.objects.get(pk = pk)
+        if chat.user2 == request.user:      
+            messageReceiver = chat.user1
+            temp = chat.unread1
+            chat.unread1 = temp +1
+            chat.save(update_fields=['unread1'])
+        else:      
+            messageReceiver = chat.user2 
+            temp = chat.unread2
+            chat.unread2 = temp +1
+            chat.save(update_fields=['unread2'])     
+        newMessage = Message(        
+            chat = chat,        
+            sender = request.user,                                                     
+            receiver = messageReceiver,        
+            body = request.POST.get('message'),                
+        )     
+        newMessage.save()       
+        return redirect('chat', pk = pk)
+    
 
-        }
-        form = userNameForm(request.POST)
-        if form.is_valid():
-            user1 = form.cleaned_data['userName']
-            user2 = User.objects.filter(username = user1)
-            context = {
-            'user' : user2
-        }
-        return render(request, 'page.html', context)
-    else:
-        form = userNameForm()
-    return render(request, 'page.html', {'form': form})
+def showMessages(request, pk):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    if request.method == "GET":
+        form = messageForm()
+        chat = Chat.objects.get(pk = pk)   
+        message_list = Message.objects.filter(chat__pk__contains = pk)
+        if chat.user1 == request.user:
+            temp = 0
+            chat.unread1 = temp
+            chat.save(update_fields=['unread1'])
+        if chat.user2 == request.user:
+            temp = 0
+            chat.unread2 = temp
+            chat.save(update_fields=['unread2'])
+        context = {      
+            'chat': chat,      
+            'form': form,      
+            'message_list': message_list    
+        }   
+        return render(request, 'chat.html', context)
 
 
-# def csrf_failure(request, reason=""):
-#     ctx = {'message': 'some custom messages'}
-#     return render_to_response('search.html', ctx)
+

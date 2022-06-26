@@ -126,4 +126,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CSRF_FAILURE_VIEW = 'Socialization.views.csrf_failure'
 
+LOGIN_REDIRECT_URL = '/home'
+
 

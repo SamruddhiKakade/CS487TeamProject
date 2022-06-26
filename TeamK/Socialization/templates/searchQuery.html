@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="main.css">
     </head>
     <body>
-        <form method="POST" action="{% url 'searchResult' %}">
+        <form method="POST" action="{% url 'search' %}">
             {% csrf_token %}
             <h1 >Search Query Page</h1>
 
@@ -19,7 +19,7 @@
 <!--            </div>-->
 
             <div>
-                <button class="button btn-outline-info" type="submit" value="{% url 'searchResult' %}">Submit</button>
+                <button class="button btn-outline-info" type="submit" value="{% url 'search' %}">Submit</button>
             </div>
 
         </form>

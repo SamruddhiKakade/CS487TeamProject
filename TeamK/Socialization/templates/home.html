@@ -6,28 +6,31 @@
     <body>
 <h1>Welcome
     {{request.user}}
-    {{info.person}}
-    {{info.Name}}
-    {{info.Year}}
-    {{info.Major}}
-
-    <form method="POST" action="{% url 'search' %}">
+    <form method="POST" action="{% url 'home' %}">
         {% csrf_token %}
-        <button class="button btn-outline-info" type="submit" value="{% url 'search' %}">Search</button>
+        <button class="button btn-outline-info" type="submit" value="{% url 'home' %}">Profile</button>
 
     </form>
 
-    <form method="POST" action="{% url 'chats' %}">
+    <form method="POST" action="{% url 'openSearch' %}">
         {% csrf_token %}
-
-        <button class="button btn-outline-info" type="submit" value="{% url 'chats' %}">Chat Rooms</button>
+        <button class="button btn-outline-info" type="submit" value="{% url 'openSearch' %}">Search</button>
 
     </form>
 
-    <form method="POST" action="{% url 'login' %}">
+   
+
+    <form method="POST">
+        {% csrf_token %}
+      <fieldset class="form-group">
+        <a id="messages-button" class="button" href="{% url 'Messages' %}">Chat Rooms</a>
+      </fieldset>
+    </form>
+
+    <form method="POST" action="{% url 'logout' %}">
         {% csrf_token %}
 
-        <button class="button btn-outline-info" type="submit" value="{% url 'login' %}">Sign Out</button>
+        <button class="button btn-outline-info" type="submit" value="{% url 'logout' %}">Sign Out</button>
 
     </form>
 
