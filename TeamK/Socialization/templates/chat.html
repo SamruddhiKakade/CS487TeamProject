@@ -6,11 +6,17 @@
     </head>
     <body>
         <form method="POST">
-            <h1 >Chat with {{receiver}} </h1>
+            <h1 >Chat with {%user1%} </h1>
 
             <div>
                 <button class="button btn-outline-info" type="submit" value="{% url 'home' %}">Home</button>
             </div>
+
+            {% for i in messages %}
+                <br>
+                    {{ i }}
+                </br>
+            {% endfor %}
 
             <div>
                 Your Message: <input type="text" placeholder="Type Here">

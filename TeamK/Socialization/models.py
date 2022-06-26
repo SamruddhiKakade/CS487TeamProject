@@ -18,8 +18,8 @@ class Information(models.Model):
 
 class ChatMessage(models.Model):
     ChatRoomName = models.CharField(max_length=100)
-    receiver = models.CharField(max_length=10000)   #String containing list of users allowed to look at message
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
+    receiver = models.CharField(max_length=20)
+    sender = models.CharField(max_length=20)
     message = models.CharField(max_length=1000)
     date = models.DateField()
 

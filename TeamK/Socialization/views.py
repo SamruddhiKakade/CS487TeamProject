@@ -16,8 +16,8 @@ from django.views.decorators.csrf import csrf_exempt
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            temp = form.save()
+        print(form.is_valid())
+        temp = form.save()
         form1 = informationForm(request.POST)
         if form1.is_valid():
             newInformation = Information(
@@ -41,23 +41,23 @@ def home(request):
     }
     return render(request, 'home.html',context)
 
-@csrf_exempt
-def newMessage(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
-    if request.method == "POST": 
-        form = messageForm(request.POST)
-        if form.is_valid(): 
-            newMessage = ChatMessage(                
-                sender = request.user,                                                     
-                receiver = '',
-                message = form.cleaned_data['message'],                
-            )     
-            newMessage.save() 
-            return redirect('showMessages')
-    else:
-        form = messageForm()
-    return render(request, 'chat.html', {'form': form})
+# @csrf_exempt
+# def newMessage(request):
+#     if not request.user.is_authenticated:
+#         return redirect('login')
+#     if request.method == "POST":
+#         form = messageForm(request.POST)
+#         print(form.is_valid())
+#         newMessage = ChatMessage(
+#             sender=request.user,
+#             receiver='',
+#             message=form.cleaned_data['message'],
+#         )
+#         newMessage.save()
+#         return redirect('showMessages')
+#     else:
+#         form = messageForm()
+#     return render(request, 'chat.html', {'form': form})
 
 @csrf_exempt
 def showInbox(request):
@@ -76,15 +76,29 @@ def showInbox(request):
 def showMessages(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    if request.method == "GET":
+    if request.method == "POST":
         form = searchResultForm(request.POST)
+        print(form.is_valid())
         user1 = form.cleaned_data['name']
-        messagesList = ChatMessage.objects.filter(Q(Q(receiver = request.user)&Q(sender = user1)) | Q(Q(sender = request.user)&Q(reciever = user1)))
+        user2 = User.objects.filter(Q(username__contains=user1))
+        messagesList = ChatMessage.objects.filter(Q(Q(sender = request.user)&Q(reciever = user2)))
+        if(len(list(messagesList)) == 0):
+            messagesList = ChatMessage.objects.filter(Q(Q(receiver = request.user)&Q(sender = user2)))
+
         context = {
             'receiver' : user1,
-            'messages' : messagesList
-        }  
+            'messages' : list(messagesList)
+        }
+        if(len(list(messagesList)) == 0):
+            newMessage = ChatMessage(
+                sender=request.user,
+                receiver='',
+                message=form.cleaned_data['message'],
+            )
+            newMessage.save()
         return render(request, 'chat.html', context)
+    else:
+        return render(request, 'chat.html')
 
 @csrf_exempt
 def openSearch(request):
@@ -99,7 +113,6 @@ def searchUser(request):
         return redirect('login')
     if request.method == "POST":
         form = searchUserForm(request.POST)
-        print(form.is_valid())
         # if form.is_valid():
         #     name = form.cleaned_data['name']
         #     matches = User.objects.filter(Q(username__contains=name) | Q(Name__contains=name))
@@ -107,10 +120,11 @@ def searchUser(request):
         #         'Names' : list(matches.Name),
         #         'Usernames' : list(matches.username)
         #     }
+        print(form.is_valid())
         name = form.cleaned_data['name']
         matches = User.objects.filter(Q(username__contains=name))
         context = {
-            'Usernames': list(matches.username)
+            'Usernames': list(matches)
         }
         return render(request, 'searchResult.html', context)
 
@@ -135,9 +149,6 @@ def showChats(request):
         context = {
 
         }
-
-
-
         form = userNameForm(request.POST)
         if form.is_valid():
             user1 = form.cleaned_data['userName']

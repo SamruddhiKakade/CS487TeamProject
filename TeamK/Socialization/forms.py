@@ -24,4 +24,4 @@ class searchUserForm(forms.Form):
     name = forms.CharField(label='', max_length=20)
 
 class searchResultForm(forms.Form):
-    choice = forms.CharField(label='', max_length=20)
+    name = forms.CharField(label='', max_length=20)

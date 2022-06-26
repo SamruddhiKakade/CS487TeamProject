@@ -4,7 +4,8 @@
         <title>Search Result</title>
     </head>
     <body>
-        <form method="POST">
+        <form method="POST" action="{% url 'chat' %}">
+            {% csrf_token %}
             <h1 >Search Result Page</h1>
 
             <div>
