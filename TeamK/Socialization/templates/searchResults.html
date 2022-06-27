@@ -6,34 +6,31 @@
     {% load crispy_forms_tags %}
     {% block content %}
     <body>
+
+        <h1 >Search Result Page</h1>
         {% for i in Usernames %}
         <br>
             {{ i }}
         </br>
          {% endfor %}
-         <h1 >Search Result Page</h1>
 
-         <div>
-             <button type="button">Back</button>
-         </div>
+            <p>Copy the username of the user you wish to message. Go back to the home page. Go to 'Chat Rooms' > 'Create new message' and then paste the username there</p>
 
-         <article class="row justify-content-center mt-5">
-            <div class="col-md-5 col-sm-12">
-                <h5>New Message</h5>
-            </div>
-        </article>
-        <article class="row justify-content-center mt-3 mb-5">
-            <div class="col-md-5 col-sm-12">
-                <form method="POST">
-                    {% csrf_token %}
-                    <p>Enter username of user you wish to message</p>
-                    {{ form | crispy }}
-                    <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-success mt-3">Continue</button>
-                    </div>
-                </form>
-            </div>
-        </article>
+
+<!--        <article class="row justify-content-center mt-3 mb-5">-->
+<!--            <div class="col-md-5 col-sm-12">-->
+<!--                <form method="POST">-->
+<!--                    {% csrf_token %}-->
+<!--                    <p>Enter username of user you wish to message</p>-->
+<!--                    <input id="name" type="text" name="name">-->
+<!--                    {{ form | crispy }}-->
+<!--                    <form method="GET" action="{% url 'newchat' %}">-->
+<!--                        <button class="button btn-light" type="submit">Create a new message</button>-->
+<!--                    </form>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </article>-->
+
         {% endblock content %}
     </body>
 </html>

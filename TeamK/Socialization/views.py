@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import UserRegisterForm, searchUserForm,chatForm,messageForm
+from .forms import UserRegisterForm, searchUserForm,chatForm,messageForm, searchResultForm
 
 
 # Create your views here.
@@ -81,14 +81,30 @@ def search(request):
         return render(request, 'searchQuery.html', context)
     if request.method == "POST":
         form = searchUserForm(request.POST)
-        form1 = chatForm()
+        # form1 = chatForm()
         if form.is_valid():
             name = form.cleaned_data['name']
+            context = {
+                'Usernames' : list(User.objects.filter(Q(username__contains=name)))
+            }
+            # 'form':form1
+        return render(request, 'searchResults.html',context )
+
+def searchResult(request, pk):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    if request.method == "POST":
+        form = searchResultForm()
+        name = form.cleaned_data['name']
+        form1 = messageForm()
+        chat = Chat.objects.get(pk=pk)
+        message_list = Message.objects.filter(chat__pk__contains=pk)
         context = {
-            'Usernames' : User.objects.filter(Q(username__contains=name) | Q(Name__contains=name)),
-            'form':form1
+            'chat': chat,
+            'form': form1,
+            'message_list': message_list
         }
-        return render(request, 'NewChat.html',context )
+        return render(request, 'chat.html', context)
 
 def newChat(request):
     if not request.user.is_authenticated:
@@ -122,7 +138,8 @@ def newChat(request):
                 return redirect('chat', pk = chatpk)    
         except:      
             return redirect('newchat')    
-    
+
+
 def showChats(request):
     if not request.user.is_authenticated:
         return redirect('login')

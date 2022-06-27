@@ -25,6 +25,7 @@ urlpatterns = [
     # path('profile/', socviews.profile, name='profile'),
     path('home/', socviews.home, name='home'),
     path('search/', socviews.search, name='search'),
+    path('searchResult/', socviews.searchResult, name='searchResult'),
     path('', socviews.register, name='register'),
     path('register', socviews.register, name='register'),
     path('Messages', socviews.showChats, name='Messages'),

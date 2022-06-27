@@ -18,6 +18,9 @@ class UserRegisterForm(UserCreationForm):
 class searchUserForm(forms.Form):
     name = forms.CharField(label='', max_length=20)
 
+class searchResultForm(forms.Form):
+    name = forms.CharField(label='', max_length=20)
+
 class chatForm(forms.Form):  
     username = forms.CharField(label='', max_length=100)
     
